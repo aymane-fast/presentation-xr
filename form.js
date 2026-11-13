@@ -39,15 +39,23 @@ function updateProgress(){
   document.querySelectorAll('.question').forEach((el,i)=>el.classList.toggle('answered',a[i]!==null));
 }
 $('sus-form').addEventListener('change',updateProgress);
+function observationPoints(formData, name) {
+  return formData.getAll(name).map(point => point.trim()).filter(Boolean).map(point => `• ${point}`).join('\n');
+}
 function showError(message){ const node=$('feedback');node.textContent=message;node.className='notice error'; }
 $('sus-form').addEventListener('submit',async event=>{
   event.preventDefault(); const a=answers();
   if(a.some(x=>x===null)){showError('Veuillez répondre aux 10 affirmations.');return;}
   const button=$('submit-btn');button.disabled=true;button.textContent='Enregistrement…';
   $('feedback').textContent='';$('feedback').className='';
+  const fields = new FormData(event.currentTarget);
+  const comfort = observationPoints(fields, 'comfort-point');
+  const discomfort = observationPoints(fields, 'discomfort-point');
+  const difficulties = [$('difficulties').value.trim(), discomfort && `Points d’inconfort\n${discomfort}`].filter(Boolean).join('\n\n');
+  const comment = [$('comment').value.trim(), comfort && `Points de confort\n${comfort}`].filter(Boolean).join('\n\n');
   const body={answers:a,visit_name:$('visit').value,device:$('device').value,
     discomfort:document.querySelector('input[name="discomfort"]:checked')?.value||'Non renseigné',
-    difficulties:$('difficulties').value,comment:$('comment').value,website:$('website').value};
+    difficulties,comment,website:$('website').value};
   try{
     const response=await fetch('/api/submit',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
     const data=await response.json();

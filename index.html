@@ -40,9 +40,23 @@
           <label><input type="radio" name="discomfort" value="Léger"> Léger</label>
           <label><input type="radio" name="discomfort" value="Important"> Important</label>
         </div><span class="field-note">Ex. : fatigue visuelle, vertige, nausée.</span></div>
-        <div class="field"><label for="difficulties">Difficultés rencontrées</label><textarea id="difficulties" name="difficulties" maxlength="750"></textarea></div>
+        <div class="field"><label for="difficulties">Difficultés rencontrées</label><textarea id="difficulties" name="difficulties" maxlength="350"></textarea></div>
       </div>
-      <div class="field" style="margin-top:16px"><label for="comment">Commentaire</label><textarea id="comment" name="comment" maxlength="750"></textarea></div>
+      <div class="observation-grid" style="margin-top:16px">
+        <div class="field" role="group" aria-labelledby="comfort-label">
+          <span class="field-title" id="comfort-label">Points de confort</span>
+          <input type="text" name="comfort-point" maxlength="120" aria-label="Point de confort 1">
+          <input type="text" name="comfort-point" maxlength="120" aria-label="Point de confort 2">
+          <input type="text" name="comfort-point" maxlength="120" aria-label="Point de confort 3">
+        </div>
+        <div class="field" role="group" aria-labelledby="discomfort-label">
+          <span class="field-title" id="discomfort-label">Points d’inconfort</span>
+          <input type="text" name="discomfort-point" maxlength="120" aria-label="Point d’inconfort 1">
+          <input type="text" name="discomfort-point" maxlength="120" aria-label="Point d’inconfort 2">
+          <input type="text" name="discomfort-point" maxlength="120" aria-label="Point d’inconfort 3">
+        </div>
+      </div>
+      <div class="field" style="margin-top:16px"><label for="comment">Commentaire</label><textarea id="comment" name="comment" maxlength="350"></textarea></div>
       <div class="honeypot" aria-hidden="true"><label for="website">Site web</label><input id="website" name="website" tabindex="-1" autocomplete="off"></div>
       <div id="feedback" role="status" aria-live="polite"></div>
       <div class="submit-bar"><div class="submit-hint">Les résultats sont publics. N’indiquez aucune information personnelle.</div><button class="primary-btn" id="submit-btn" type="submit" disabled>Envoyer</button></div>

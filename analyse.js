@@ -15,8 +15,8 @@ function observation(row,i){
   const title=node('div','obs-title');title.append(node('span','',`Participant ${String(i+1).padStart(2,'0')}`),node('span','obs-meta',row.device||'Appareil non précisé'));item.append(title);
   if(row.visit_name)item.append(node('p','obs-text',`Visite : ${row.visit_name}`));
   item.append(node('p','obs-text',`Inconfort : ${row.discomfort||'Non renseigné'}`));
-  if(row.difficulties)item.append(node('p','obs-text',`Difficultés : ${row.difficulties}`));
-  if(row.comment)item.append(node('p','obs-text',`Commentaire : ${row.comment}`));
+  if(row.difficulties)item.append(node('p','obs-text',`Inconfort et difficultés :\n${row.difficulties}`));
+  if(row.comment)item.append(node('p','obs-text',`Commentaire et confort :\n${row.comment}`));
   return item;
 }
 function render(){
@@ -66,7 +66,7 @@ function saveFile(name,content,mime){
   const blob=new Blob([content],{type:mime}),url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
 }
 $('csv-btn').addEventListener('click',()=>{
-  const head=['Participant','Date','Visite','Appareil',...Array.from({length:10},(_,i)=>`Q${i+1}`),'Somme impaires','Somme paires','SUS','Inconfort','Difficultés','Commentaire'];
+  const head=['Participant','Date','Visite','Appareil',...Array.from({length:10},(_,i)=>`Q${i+1}`),'Somme impaires','Somme paires','SUS','Inconfort','Inconfort et difficultés','Commentaire et confort'];
   const cleaned=rows.filter(r=>scoreOf(r.answers));
   const data=cleaned.map((r,i)=>[ `P${String(i+1).padStart(2,'0')}`,r.created_at||'',r.visit_name||'',r.device||'',...r.answers,scoreOf(r.answers).odd,scoreOf(r.answers).even,scoreOf(r.answers).score,r.discomfort||'',r.difficulties||'',r.comment||'' ]);
   const escape=x=>'"'+String(x??'').replace(/"/g,'""')+'"';
