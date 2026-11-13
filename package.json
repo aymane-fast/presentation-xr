@@ -1,0 +1,10 @@
+{
+  "name": "sus-google-arts-culture",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Site SUS pour Google Arts & Culture — HTML/JS, Vercel Functions et Supabase",
+  "scripts": {
+    "test": "node --test"
+  }
+}

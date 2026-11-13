@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#0e2533"><meta name="description" content="Questionnaire SUS anonyme pour évaluer la visite immersive Google Arts & Culture.">
+  <title>Questionnaire SUS — Google Arts & Culture</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script defer src="/form.js"></script>
+</head>
+<body>
+  <nav class="topbar" aria-label="Navigation"><div class="shell topbar-inner">
+    <a class="brand" href="/"><span class="brand-square">✳</span> XR / UX IMMERSIVE</a>
+    <div class="top-links"><a href="/" aria-current="page">Questionnaire</a><a href="/analyse">Résultats</a></div>
+  </div></nav>
+  <header class="hero"><div class="hero-inner">
+    <div class="eyebrow">CHAPITRE 02 — CAS PRATIQUE 01</div>
+    <h1>Votre expérience<br>compte.</h1>
+    <p>Évaluation de l’utilisabilité d’une visite immersive sur smartphone avec <strong>Google Arts & Culture</strong>.</p>
+    <div class="hero-tags"><span class="hero-tag">10 affirmations</span><span class="hero-tag">Réponse anonyme</span><span class="hero-tag">Échelle SUS · 1 à 5</span></div>
+  </div></header>
+  <main class="shell main" id="main">
+    <section class="card intro-card" aria-label="Instructions">
+      <div class="info-icon" aria-hidden="true">ⓘ</div>
+      <div><h2>Avant de répondre</h2><p>Explorez d’abord la <strong>même visite immersive</strong> que les autres participants. Ensuite, évaluez votre expérience personnelle. Il n’y a pas de bonne ou de mauvaise réponse. Le « système » correspond ici à Google Arts & Culture.</p>
+      <div class="steps-inline"><span>01 · Explorer</span><span>02 · Répondre</span><span>03 · Envoyer</span></div></div>
+    </section>
+    <form id="sus-form" class="card form-card" novalidate>
+      <div class="section-head"><div><h2>Informations sur le test</h2><p>Aucun nom, numéro ou e-mail demandé.</p></div><span class="pill">Anonyme</span></div>
+      <div class="meta-grid">
+        <div class="field"><label for="visit">Visite / galerie testée (facultatif)</label><input id="visit" name="visit" type="text" maxlength="120" placeholder="Ex. : galerie virtuelle choisie par le groupe" autocomplete="off"><span class="field-note">Pour comparer les résultats, utilisez la même visite pour tout le monde.</span></div>
+        <div class="field"><label for="device">Appareil utilisé</label><select id="device" name="device"><option value="Non précisé">Non précisé</option><option value="Android">Android</option><option value="iPhone">iPhone</option><option value="Autre">Autre</option></select></div>
+      </div>
+      <hr class="line">
+      <div class="section-head"><div><h2>Questionnaire SUS</h2><p>Indiquez votre niveau d’accord avec chaque affirmation.</p></div><span id="progress-label" class="pill" aria-live="polite">0 / 10</span></div>
+      <div class="scale-row"><span><strong>1</strong> · Pas du tout d’accord</span><span><strong>5</strong> · Tout à fait d’accord</span></div>
+      <div class="progress-track" role="progressbar" aria-label="Progression du questionnaire" aria-valuemin="0" aria-valuemax="10" aria-valuenow="0" id="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+      <div id="questions" class="question-list"></div>
+      <hr class="line">
+      <div class="section-head"><div><h2>Confort et observations</h2><p>Informations complémentaires, distinctes du score SUS.</p></div><span class="pill">Facultatif</span></div>
+      <div class="observation-grid">
+        <div class="field"><span class="field-title">Avez-vous ressenti un inconfort ?</span><div class="radio-row">
+          <label><input type="radio" name="discomfort" value="Aucun"> Aucun</label>
+          <label><input type="radio" name="discomfort" value="Léger"> Léger</label>
+          <label><input type="radio" name="discomfort" value="Important"> Important</label>
+        </div><span class="field-note">Ex. : fatigue visuelle, vertige, nausée.</span></div>
+        <div class="field"><label for="difficulties">Difficultés rencontrées / observées</label><textarea id="difficulties" name="difficulties" maxlength="750" placeholder="Ex. : je ne savais pas comment changer de salle…"></textarea></div>
+      </div>
+      <div class="field" style="margin-top:16px"><label for="comment">Commentaire libre (facultatif)</label><textarea id="comment" name="comment" maxlength="750" placeholder="Ce que vous avez aimé ou ce qui pourrait être amélioré…"></textarea></div>
+      <div class="honeypot" aria-hidden="true"><label for="website">Site web</label><input id="website" name="website" tabindex="-1" autocomplete="off"></div>
+      <div id="feedback" role="status" aria-live="polite"></div>
+      <div class="submit-bar"><div class="submit-hint">Vos réponses sont envoyées à une base de données pour une étude académique. Ne saisissez aucune information personnelle dans les commentaires.</div><button class="primary-btn" id="submit-btn" type="submit" disabled>Envoyer mes réponses →</button></div>
+    </form>
+    <section id="success-card" class="card intro-card hidden" aria-live="polite" style="margin-top:23px"><div class="info-icon">✓</div><div><h2>Réponse enregistrée, merci !</h2><p>Votre questionnaire a été ajouté aux résultats. Vous pouvez fermer cette page ou transmettre le téléphone au participant suivant.</p><div class="steps-inline"><button type="button" class="ghost-btn" id="another-btn">Nouveau participant</button><a class="mini-link" href="/analyse">Voir les résultats</a></div></div></section>
+  </main>
+  <footer class="shell page-footer"><span>UX immersive · Étude SUS · Google Arts & Culture</span><span>Questionnaire standardisé, 10 items · Version française</span></footer>
+</body></html>
