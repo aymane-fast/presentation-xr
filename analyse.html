@@ -6,10 +6,9 @@
 </head><body>
   <nav class="topbar" aria-label="Navigation"><div class="shell topbar-inner"><a class="brand" href="/"><span class="brand-square">✳</span> XR / UX IMMERSIVE</a>
     <div class="top-links"><a href="/">Questionnaire</a><a href="/analyse" aria-current="page">Résultats</a></div></div></nav>
-  <header class="hero"><div class="hero-inner"><div class="eyebrow">CHAPITRE 02 — CAS PRATIQUE 01</div><h1>Les résultats,<br>en temps réel.</h1><p>Scores SUS individuels, moyenne du groupe et observations recueillies pendant les tests de Google Arts & Culture.</p>
-    <div class="hero-tags"><span class="hero-tag">Données sauvegardées</span><span class="hero-tag">Calcul automatique</span><span class="hero-tag">Export CSV / JSON</span></div></div></header>
+  <header class="hero"><div class="hero-inner"><h1>Résultats SUS</h1><p>Google Arts &amp; Culture</p></div></header>
   <main class="shell main">
-    <div class="dashboard-head"><div class="pill" id="last-refresh">Prêt à actualiser</div>
+    <div class="dashboard-head"><div class="pill" id="last-refresh" hidden></div>
       <div class="dashboard-actions"><button type="button" class="ghost-btn" id="refresh-btn">↻ Actualiser</button><button type="button" class="ghost-btn" id="csv-btn" disabled>↓ Export CSV</button><button type="button" class="ghost-btn" id="json-btn" disabled>↓ Export JSON</button><button type="button" class="ghost-btn" onclick="window.print()">Imprimer / PDF</button></div>
     </div>
     <div id="error" role="status" aria-live="polite"></div>
@@ -20,26 +19,18 @@
       <div class="card stat"><div class="stat-label">Inconfort signalé</div><div class="stat-value" id="stat-discomfort">—</div><div class="stat-sub">léger ou important</div></div>
     </section>
     <div class="report-grid">
-      <section class="card report-card"><h2>01 / Scores des participants</h2><p class="subtle">Chaque questionnaire complet produit un score SUS de 0 à 100.</p>
+      <section class="card report-card"><h2>Scores des participants</h2>
         <div class="scores-scroll"><table class="scores-table" aria-label="Scores SUS par participant"><thead><tr><th>Participant</th><th>Somme impaires</th><th>Somme paires</th><th>SUS / 100</th><th>Visualisation</th></tr></thead><tbody id="scores-body"><tr><td colspan="5" class="empty">Chargement des réponses…</td></tr></tbody></table></div>
-        <div class="stat-footer">SUS = (Σ Q impaires − Σ Q paires + 20) × 2,5. Les questions paires sont inversées dans ce calcul.</div>
       </section>
-      <section class="card report-card"><h2>02 / Interprétation</h2><p class="subtle">Méthode de calcul et répartition des scores.</p>
-        <div class="method-box"><b>MÉTHODE STANDARDISÉE SUS</b><div class="formula">(Impaires − Paires + 20) × 2,5</div>Un score de 68 est souvent utilisé comme moyenne de référence. Un score SUS ne représente pas un pourcentage de réussite.</div>
+      <section class="card report-card"><h2>Répartition des scores</h2>
+        <div class="method-box"><b>Calcul du score SUS</b><div class="formula">(Somme impaire − somme paire + 20) × 2,5</div>Score de référence courant : 68 sur 100.</div>
         <div class="distribution" id="distribution"></div>
-        <p class="export-hint">L’analyse s’actualise à chaque ouverture de cette page. Utilisez « Actualiser » pour voir de nouvelles réponses sans recharger l’onglet.</p>
       </section>
     </div>
     <div class="report-grid">
-      <section class="card report-card"><h2>03 / Réponses par question</h2><p class="subtle">Moyenne des contributions de chaque item (0 à 4), après inversion des items pairs.</p><div id="question-bars" class="distribution"></div>
-        <p class="export-hint">Valeur haute = contribution positive à l’utilisabilité. Cette grille aide à préparer vos trois points forts, trois points faibles et trois recommandations.</p>
+      <section class="card report-card"><h2>Score par question</h2><p class="subtle">Moyenne sur 4, après inversion des réponses aux questions paires.</p><div id="question-bars" class="distribution"></div>
       </section>
-      <section class="card report-card"><h2>04 / Observations</h2><p class="subtle">Notes et inconfort signalés, séparément du score SUS.</p><div id="observations"><div class="empty">Aucune observation pour le moment.</div></div></section>
+      <section class="card report-card"><h2>Observations</h2><div id="observations"><div class="empty">Aucune observation.</div></div></section>
     </div>
-    <section class="card intro-card" style="margin-top:17px"><div class="info-icon">!</div><div><h2>Pour le compte rendu de 2 pages</h2>
-      <p>Utilisez les données recueillies pour rédiger <strong>3 points forts, 3 points faibles et 3 recommandations</strong>. Le tableau de bord calcule les scores, mais il ne remplace pas l'analyse de vos observations.</p><div class="steps-inline"><span>SUS moyen</span><span>3 points forts</span><span>3 points faibles</span><span>3 recommandations</span></div>
-      <p style="margin-top:15px"><strong>Confidentialité :</strong> ce tableau de bord est accessible sans connexion. Ne renseignez aucune donnée personnelle dans le formulaire et ne partagez ce lien qu'avec les personnes concernées.</p>
-    </div></section>
   </main>
-  <footer class="shell page-footer"><span>UX immersive · Étude SUS · Google Arts & Culture</span><span>F-SUS · Gronier &amp; Baudet (2021) · Données anonymes</span></footer>
 </body></html>

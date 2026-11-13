@@ -54,7 +54,7 @@ $('sus-form').addEventListener('submit',async event=>{
     if(!response.ok || !data.ok)throw new Error(data.error||'Enregistrement impossible.');
     $('sus-form').classList.add('hidden');$('success-card').classList.remove('hidden');$('success-card').scrollIntoView({behavior:'smooth',block:'center'});
   }catch(error){showError(error.message||'Erreur réseau. Réessayez.');button.disabled=false;}
-  finally{button.textContent='Envoyer mes réponses →';}
+  finally{button.textContent='Envoyer';}
 });
 $('another-btn').addEventListener('click',()=>{
   $('sus-form').reset();$('sus-form').classList.remove('hidden');$('success-card').classList.add('hidden');updateProgress();$('main').scrollIntoView({behavior:'smooth'});

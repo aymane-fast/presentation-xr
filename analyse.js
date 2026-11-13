@@ -23,12 +23,12 @@ function render(){
   const valid=rows.filter(r=>scoreOf(r.answers));const scores=valid.map(r=>scoreOf(r.answers).score);
   const count=valid.length,avg=count?scores.reduce((a,b)=>a+b,0)/count:null;
   $('stat-count').textContent=String(count);
-  $('stat-goal').textContent=count<5?`Encore ${5-count} pour atteindre 5 participants`:`Objectif de 5 atteint${count>5?' · réponses supplémentaires incluses':''}`;
+  $('stat-goal').textContent=count<5?'Objectif : 5 participants':'Objectif atteint';
   $('stat-average').textContent=avg===null?'—':fr(Math.round(avg*10)/10);
   $('stat-best').textContent=count?fr(Math.max(...scores)):'—';
   $('stat-discomfort').textContent=String(valid.filter(r=>r.discomfort==='Léger'||r.discomfort==='Important').length);
   const body=$('scores-body');body.replaceChildren();
-  if(!count){const tr=node('tr');const td=node('td','empty');td.colSpan=5;td.append(node('strong','','Aucune réponse enregistrée'),node('span','','Envoyez un premier questionnaire depuis le lien public.'));tr.append(td);body.append(tr);}
+  if(!count){const tr=node('tr');const td=node('td','empty');td.colSpan=5;td.textContent='Aucune réponse enregistrée.';tr.append(td);body.append(tr);}
   valid.forEach((r,i)=>{
     const score=scoreOf(r.answers);const tr=node('tr');
     tr.append(node('td','',`P${String(i+1).padStart(2,'0')}`),node('td','',score.odd),node('td','',score.even),node('td','score-chip',fr(score.score)));
@@ -45,7 +45,7 @@ function render(){
   });
   const obs=$('observations');obs.replaceChildren();
   const observed=valid.map((r,i)=>({r,i})).filter(x=>x.r.difficulties||x.r.comment||x.r.discomfort!=='Non renseigné'||x.r.visit_name);
-  if(!observed.length)obs.append(node('div','empty','Aucune observation fournie.'));
+  if(!observed.length)obs.append(node('div','empty','Aucune observation.'));
   observed.forEach(({r,i})=>obs.append(observation(r,i)));
   $('csv-btn').disabled=$('json-btn').disabled=count===0;
 }
@@ -56,8 +56,9 @@ async function refresh(){
     const response=await fetch('/api/results',{cache:'no-store'});const data=await response.json();
     if(!response.ok||!Array.isArray(data.responses))throw new Error(data.error||'Erreur de chargement.');
     rows=data.responses;render();
+    $('last-refresh').hidden=false;
     $('last-refresh').textContent=`Mis à jour à ${new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'})}`;
-    if(rows.length>=data.limit){$('error').textContent=`Attention : affichage limité aux ${data.limit} premières réponses. Toutes les soumissions restent enregistrées dans Supabase.`;$('error').className='notice error';}
+    if(rows.length>=data.limit){$('error').textContent=`Affichage limité aux ${data.limit} premières réponses.`;$('error').className='notice error';}
   }catch(err){$('error').textContent=err.message||'Connexion indisponible.';$('error').className='notice error';}
   finally{$('refresh-btn').disabled=false;$('refresh-btn').textContent='↻ Actualiser';}
 }
