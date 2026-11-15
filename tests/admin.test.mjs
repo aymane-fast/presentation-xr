@@ -3,18 +3,12 @@ import assert from 'node:assert/strict';
 import {GET, DELETE} from '../api/admin.mjs';
 
 const url = 'https://example.com/api/admin';
-const credential = 'test-password-only';
 
-test('admin listing and deletion require authorization and validate the deletion scope', async t => {
+test('admin rejects invalid deletion scopes before querying the database', async t => {
   t.mock.method(globalThis, 'fetch', async () => assert.fail('Unexpected database request'));
-  delete process.env.SUS_ADMIN_PASSWORD;
-  assert.equal((await GET(new Request(url))).status, 503);
-  process.env.SUS_ADMIN_PASSWORD = credential;
-  assert.equal((await GET(new Request(url))).status, 401);
-  assert.equal((await DELETE(new Request(url, {method:'DELETE'}))).status, 401);
 
   const send = body => DELETE(new Request(url, {
-    method:'DELETE', headers:{Authorization:`Bearer ${credential}`, 'Content-Type':'application/json'},
+    method:'DELETE', headers:{'Content-Type':'application/json'},
     body:JSON.stringify(body)
   }));
   for (const body of [{ids:[]}, {ids:[0]}, {ids:['1']}, {confirmation:'SUPPRIMER'}]) {
@@ -23,10 +17,9 @@ test('admin listing and deletion require authorization and validate the deletion
 });
 
 test('admin paginates and deletes from the same table, including all rows when confirmed', async t => {
-  process.env.SUS_ADMIN_PASSWORD = credential;
   process.env.SUPABASE_URL = 'https://sample-ref.supabase.co';
   process.env.SUPABASE_SECRET_KEY = 'test-key';
-  const headers = {Authorization:`Bearer ${credential}`, 'Content-Type':'application/json'};
+  const headers = {'Content-Type':'application/json'};
   let rows = Array.from({length:52}, (_, i) => ({id:52-i}));
   t.mock.method(globalThis, 'fetch', async (target, options) => {
     const upstream = new URL(target);

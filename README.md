@@ -58,7 +58,7 @@ Les dix formulations sont celles du questionnaire français de votre version pr�
 
 ## Administration des réponses
 
-Dans Vercel, ajoutez `SUS_ADMIN_PASSWORD` aux variables **Production**. Choisissez un mot de passe aléatoire et dédié (ASCII), puis redéployez. Ouvrez `/admin` et saisissez ce mot de passe pour accéder à la liste.
+Ouvrez `/admin` pour afficher la liste. Toute personne ayant accès au site peut supprimer des réponses.
 
 Pour une base Supabase déjà créée, exécutez dans **SQL Editor** :
 

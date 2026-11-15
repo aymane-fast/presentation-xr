@@ -16,18 +16,11 @@
   <main class="shell" style="padding-block:24px">
     <section class="card report-card">
       <h1>Gestion des réponses</h1>
-      <form id="admin-login">
-        <div class="field"><label for="admin-password">Mot de passe</label>
-          <input id="admin-password" type="password" autocomplete="current-password" required>
-        </div>
-        <p><button class="primary-btn" type="submit">Ouvrir la liste</button></p>
-      </form>
       <div id="admin-list" hidden>
         <div class="dashboard-actions">
           <button class="ghost-btn" id="admin-refresh">Actualiser</button>
           <button class="ghost-btn" id="delete-selected" disabled>Supprimer la sélection</button>
           <button class="ghost-btn" id="delete-all" disabled>Tout supprimer</button>
-          <button class="ghost-btn" id="admin-lock">Verrouiller</button>
         </div>
         <div class="scores-scroll">
           <table class="scores-table">

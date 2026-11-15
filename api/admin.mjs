@@ -1,18 +1,7 @@
-import {createHash, timingSafeEqual} from 'node:crypto';
 import {json, supabaseConfig} from '../lib/sus.mjs';
 
 const pageSize = 50;
 const validId = id => Number.isSafeInteger(id) && id > 0;
-const hash = value => createHash('sha256').update(value).digest();
-
-function authorize(request) {
-  const password = process.env.SUS_ADMIN_PASSWORD;
-  if (!password) return json({error:'Administration non configurée.'}, 503);
-  const supplied = request.headers.get('authorization') || '';
-  if (!timingSafeEqual(hash(supplied), hash(`Bearer ${password}`))) {
-    return json({error:'Mot de passe incorrect.'}, 401);
-  }
-}
 
 async function query(params, method = 'GET') {
   const config = supabaseConfig();
@@ -41,8 +30,6 @@ async function query(params, method = 'GET') {
 }
 
 export async function GET(request) {
-  const denied = authorize(request);
-  if (denied) return denied;
   const before = new URL(request.url).searchParams.get('before');
   const params = new URLSearchParams({
     select:'id,created_at,visit_name,device,score', order:'id.desc', limit:String(pageSize + 1)
@@ -55,8 +42,6 @@ export async function GET(request) {
 }
 
 export async function DELETE(request) {
-  const denied = authorize(request);
-  if (denied) return denied;
   if (request.headers.get('content-type')?.split(';')[0].trim() !== 'application/json') {
     return json({error:'Format JSON requis.'}, 415);
   }

@@ -1,16 +1,13 @@
 'use strict';
 
 const byId = id => document.getElementById(id);
-const login = byId('admin-login');
 const list = byId('admin-list');
 const table = byId('admin-rows');
 const status = byId('admin-status');
-const password = byId('admin-password');
 const selectPage = byId('select-page');
 const selectedButton = byId('delete-selected');
 const allButton = byId('delete-all');
 const nextButton = byId('admin-next');
-let credential = '';
 let responses = [];
 let nextBefore = null;
 let busy = false;
@@ -29,8 +26,6 @@ function updateControls() {
   nextButton.hidden = nextBefore === null;
   nextButton.disabled = busy;
   byId('admin-refresh').disabled = busy;
-  byId('admin-lock').disabled = busy;
-  login.querySelector('button').disabled = busy;
 }
 
 function render() {
@@ -49,21 +44,10 @@ function render() {
   }
 }
 
-function lock() {
-  credential = '';
-  password.value = '';
-  responses = [];
-  nextBefore = null;
-  table.replaceChildren();
-  list.hidden = true;
-  login.hidden = false;
-}
-
 async function request(path, options = {}) {
   const response = await fetch(`/api/admin${path}`, {
-    ...options, headers:{Authorization:`Bearer ${credential}`, 'Content-Type':'application/json'}
+    ...options, headers:{'Content-Type':'application/json'}
   });
-  if (response.status === 401) lock();
   const data = await response.json();
   if (!response.ok) throw new Error(data.error || 'Opération impossible.');
   return data;
@@ -75,7 +59,6 @@ async function load(before = null) {
   nextBefore = data.nextBefore;
   render();
   list.hidden = false;
-  login.hidden = true;
   status.textContent = responses.length ? '' : 'Aucune réponse sur cette page.';
 }
 
@@ -102,14 +85,6 @@ function remove(body) {
   });
 }
 
-login.addEventListener('submit', event => {
-  event.preventDefault();
-  if (busy) return;
-  credential = password.value;
-  password.value = '';
-  run(() => load());
-});
-byId('admin-lock').addEventListener('click', () => { lock(); status.textContent = ''; });
 byId('admin-refresh').addEventListener('click', () => run(() => load()));
 nextButton.addEventListener('click', () => run(() => load(nextBefore)));
 table.addEventListener('change', updateControls);
@@ -125,3 +100,5 @@ allButton.addEventListener('click', () => {
   const confirmation = window.prompt('Suppression définitive de toutes les réponses. Saisissez SUPPRIMER TOUT pour confirmer.');
   if (confirmation === 'SUPPRIMER TOUT') remove({confirmation});
 });
+
+run(() => load());
