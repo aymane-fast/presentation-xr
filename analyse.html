@@ -9,7 +9,7 @@
   <header class="hero"><div class="hero-inner"><h1>Résultats SUS</h1><p>Google Arts &amp; Culture</p></div></header>
   <main class="shell main">
     <div class="dashboard-head"><div class="pill" id="last-refresh" hidden></div>
-      <div class="dashboard-actions"><button type="button" class="ghost-btn" id="refresh-btn">↻ Actualiser</button><button type="button" class="ghost-btn" id="csv-btn" disabled>↓ Export CSV</button><button type="button" class="ghost-btn" id="json-btn" disabled>↓ Export JSON</button><button type="button" class="ghost-btn" onclick="window.print()">Imprimer / PDF</button></div>
+      <div class="dashboard-actions"><button type="button" class="ghost-btn" id="refresh-btn">↻ Actualiser</button><button type="button" class="ghost-btn" id="csv-btn" disabled>↓ Export CSV</button><button type="button" class="ghost-btn" id="json-btn" disabled>↓ Export JSON</button><button type="button" class="ghost-btn" onclick="window.print()">Imprimer / PDF</button><button type="button" class="ghost-btn delete-response" id="delete-all-responses" disabled>Tout supprimer</button></div>
     </div>
     <div id="error" role="status" aria-live="polite"></div>
     <section class="stats-grid" aria-label="Indicateurs">
@@ -20,7 +20,7 @@
     </section>
     <div class="report-grid">
       <section class="card report-card"><h2>Scores des participants</h2>
-        <div class="scores-scroll"><table class="scores-table" aria-label="Scores SUS par participant"><thead><tr><th>Participant</th><th>Somme impaires</th><th>Somme paires</th><th>SUS / 100</th><th>Visualisation</th></tr></thead><tbody id="scores-body"><tr><td colspan="5" class="empty">Chargement des réponses…</td></tr></tbody></table></div>
+        <div class="scores-scroll"><table class="scores-table" aria-label="Scores SUS par participant"><thead><tr><th>Participant</th><th>Somme impaires</th><th>Somme paires</th><th>SUS / 100</th><th>Visualisation</th><th class="response-action">Action</th></tr></thead><tbody id="scores-body"><tr><td colspan="6" class="empty">Chargement des réponses…</td></tr></tbody></table></div>
       </section>
       <section class="card report-card"><h2>Répartition des scores</h2>
         <div class="method-box"><b>Calcul du score SUS</b><div class="formula">(Somme impaire − somme paire + 20) × 2,5</div>Score de référence courant : 68 sur 100.</div>

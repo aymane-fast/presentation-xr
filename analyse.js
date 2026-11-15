@@ -1,6 +1,13 @@
 'use strict';
 const $=id=>document.getElementById(id);
 let rows=[];
+const eraseAll = $('delete-all-responses');
+
+function setBusy(busy) {
+  $('refresh-btn').disabled = busy;
+  eraseAll.disabled = busy || rows.length === 0;
+  document.querySelectorAll('#scores-body button').forEach(button => { button.disabled = busy; });
+}
 const scoreOf=a=>{
   if(!Array.isArray(a)||a.length!==10||!a.every(v=>Number.isInteger(v)&&v>=1&&v<=5))return null;
   const odd=a.filter((_,i)=>i%2===0).reduce((s,v)=>s+v,0);
@@ -28,11 +35,24 @@ function render(){
   $('stat-best').textContent=count?fr(Math.max(...scores)):'—';
   $('stat-discomfort').textContent=String(valid.filter(r=>r.discomfort==='Léger'||r.discomfort==='Important').length);
   const body=$('scores-body');body.replaceChildren();
-  if(!count){const tr=node('tr');const td=node('td','empty');td.colSpan=5;td.textContent='Aucune réponse enregistrée.';tr.append(td);body.append(tr);}
+  if(!count){const tr=node('tr');const td=node('td','empty');td.colSpan=6;td.textContent='Aucune réponse enregistrée.';tr.append(td);body.append(tr);}
   valid.forEach((r,i)=>{
     const score=scoreOf(r.answers);const tr=node('tr');
-    tr.append(node('td','',`P${String(i+1).padStart(2,'0')}`),node('td','',score.odd),node('td','',score.even),node('td','score-chip',fr(score.score)));
-    const cell=node('td');const wrapper=node('div','bar-container');wrapper.append(bar(score.score));cell.append(wrapper);tr.append(cell);body.append(tr);
+    const participant = `P${String(i+1).padStart(2,'0')}`;
+    tr.append(node('td','',participant),node('td','',score.odd),node('td','',score.even),node('td','score-chip',fr(score.score)));
+    const cell=node('td');const wrapper=node('div','bar-container');wrapper.append(bar(score.score));cell.append(wrapper);
+    const action = node('td', 'response-action');
+    const remove = node('button', 'ghost-btn delete-response', 'Supprimer');
+    remove.type = 'button';
+    remove.setAttribute('aria-label', `Supprimer ${participant}`);
+    remove.addEventListener('click', () => {
+      if (window.confirm(`Supprimer définitivement la réponse de ${participant} ?`)) {
+        deleteResponses({ids:[r.id]});
+      }
+    });
+    action.append(remove);
+    tr.append(cell,action);
+    body.append(tr);
   });
   const d=$('distribution');d.replaceChildren();
   [[0,50,'0–49'],[50,68,'50–67'],[68,81,'68–80'],[81,101,'81–100']].forEach(([min,max,label])=>{
@@ -50,7 +70,7 @@ function render(){
   $('csv-btn').disabled=$('json-btn').disabled=count===0;
 }
 async function refresh(){
-  $('refresh-btn').disabled=true;$('refresh-btn').textContent='Chargement…';
+  setBusy(true);$('refresh-btn').textContent='Chargement…';
   $('error').textContent='';$('error').className='';
   try{
     const response=await fetch('/api/results',{cache:'no-store'});const data=await response.json();
@@ -60,8 +80,35 @@ async function refresh(){
     $('last-refresh').textContent=`Mis à jour à ${new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'})}`;
     if(rows.length>=data.limit){$('error').textContent=`Affichage limité aux ${data.limit} premières réponses.`;$('error').className='notice error';}
   }catch(err){$('error').textContent=err.message||'Connexion indisponible.';$('error').className='notice error';}
-  finally{$('refresh-btn').disabled=false;$('refresh-btn').textContent='↻ Actualiser';}
+  finally{setBusy(false);$('refresh-btn').textContent='↻ Actualiser';}
 }
+async function deleteResponses(selection) {
+  if ($('refresh-btn').disabled) return;
+  setBusy(true);
+  $('error').className = '';
+  $('error').textContent = 'Suppression…';
+  try {
+    const response = await fetch('/api/admin', {
+      method:'DELETE', headers:{'Content-Type':'application/json'}, body:JSON.stringify(selection)
+    });
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.error || 'Suppression impossible.');
+    rows = selection.ids ? rows.filter(row => !selection.ids.includes(row.id)) : [];
+    render();
+    await refresh();
+  } catch (error) {
+    $('error').className = 'notice error';
+    $('error').textContent = error.message || 'Suppression impossible.';
+  } finally {
+    setBusy(false);
+  }
+}
+
+eraseAll.addEventListener('click', () => {
+  const confirmation = window.prompt('Suppression définitive de toutes les réponses. Saisissez SUPPRIMER TOUT pour confirmer.');
+  if (confirmation === 'SUPPRIMER TOUT') deleteResponses({confirmation});
+});
+
 function saveFile(name,content,mime){
   const blob=new Blob([content],{type:mime}),url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
 }
