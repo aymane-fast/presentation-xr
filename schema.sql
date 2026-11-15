@@ -20,5 +20,5 @@ create table if not exists public.sus_responses (
 -- Les requêtes passent par le backend Vercel, jamais depuis le navigateur.
 alter table public.sus_responses enable row level security;
 revoke all on table public.sus_responses from anon, authenticated;
-grant select, insert on table public.sus_responses to service_role;
+grant select, insert, delete on table public.sus_responses to service_role;
 create index if not exists sus_responses_created_idx on public.sus_responses (created_at desc);

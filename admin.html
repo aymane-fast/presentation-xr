@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Gestion des réponses SUS</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script defer src="/admin.js"></script>
+</head>
+<body>
+  <nav class="topbar" aria-label="Navigation"><div class="shell topbar-inner">
+    <a class="brand" href="/">Questionnaire</a>
+    <div class="top-links"><a href="/analyse">Résultats</a></div>
+  </div></nav>
+  <main class="shell" style="padding-block:24px">
+    <section class="card report-card">
+      <h1>Gestion des réponses</h1>
+      <form id="admin-login">
+        <div class="field"><label for="admin-password">Mot de passe</label>
+          <input id="admin-password" type="password" autocomplete="current-password" required>
+        </div>
+        <p><button class="primary-btn" type="submit">Ouvrir la liste</button></p>
+      </form>
+      <div id="admin-list" hidden>
+        <div class="dashboard-actions">
+          <button class="ghost-btn" id="admin-refresh">Actualiser</button>
+          <button class="ghost-btn" id="delete-selected" disabled>Supprimer la sélection</button>
+          <button class="ghost-btn" id="delete-all" disabled>Tout supprimer</button>
+          <button class="ghost-btn" id="admin-lock">Verrouiller</button>
+        </div>
+        <div class="scores-scroll">
+          <table class="scores-table">
+            <thead><tr><th><input type="checkbox" id="select-page" aria-label="Sélectionner toute la page"></th><th>ID</th><th>Date</th><th>Visite</th><th>Appareil</th><th>Score SUS</th></tr></thead>
+            <tbody id="admin-rows"></tbody>
+          </table>
+        </div>
+        <p><button class="ghost-btn" id="admin-next" hidden>Page suivante</button></p>
+      </div>
+      <p id="admin-status" role="status"></p>
+    </section>
+  </main>
+</body>
+</html>

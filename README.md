@@ -54,3 +54,16 @@ Le calcul n'est **pas** un pourcentage de réussite. Un score d'environ 68 est u
 Gronier, G., & Baudet, A. (2021). Psychometric evaluation of the F-SUS: Creation and validation of the French version of the System Usability Scale. *International Journal of Human–Computer Interaction, 37*(16), 1571–1582. https://doi.org/10.1080/10447318.2021.1898828
 
 Les dix formulations sont celles du questionnaire français de votre version précédente. Pour un usage de recherche exigeant une reproduction strictement identique à la F-SUS validée, vérifier les libellés contre la version littéraire de Gronier et Baudet. Le score applique la formule originale (Brooke, 1996).
+
+
+## Administration des réponses
+
+Dans Vercel, ajoutez `SUS_ADMIN_PASSWORD` aux variables **Production**. Choisissez un mot de passe aléatoire et dédié (ASCII), puis redéployez. Ouvrez `/admin` et saisissez ce mot de passe pour accéder à la liste.
+
+Pour une base Supabase déjà créée, exécutez dans **SQL Editor** :
+
+```sql
+grant delete on table public.sus_responses to service_role;
+```
+
+La suppression de la sélection concerne les cases cochées sur la page affichée. **Tout supprimer** concerne toutes les lignes, y compris celles des autres pages. Les suppressions sont définitives et les résultats sont recalculés au prochain chargement.

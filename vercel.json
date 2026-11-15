@@ -1,6 +1,7 @@
 {
   "rewrites": [
-    {"source": "/analyse", "destination": "/analyse.html"}
+    {"source": "/analyse", "destination": "/analyse.html"},
+    {"source": "/admin", "destination": "/admin.html"}
   ],
   "headers": [
     {"source": "/api/(.*)", "headers": [
