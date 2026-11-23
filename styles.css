@@ -91,6 +91,8 @@
 @media (max-width: 480px) {
   .topbar-inner { flex-wrap: wrap; padding: 10px 0; }
   .top-links { flex-wrap: wrap; }
+  body:has(.sus-guide) .hero h1, .sus-card h2 { text-wrap: balance; }
+  .sus-example > div { flex-direction: column; }
 }
 
 @media print{.topbar,.hero,.dashboard-actions,.primary-btn,.ghost-btn,.response-action,.main{margin:0;padding:0}.shell{width:100%}.card{box-shadow:none;break-inside:avoid}.question{break-inside:avoid}.report-grid{display:block}.report-card{margin:18px 0}@page{margin:13mm}}
