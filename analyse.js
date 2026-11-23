@@ -21,12 +21,16 @@ const fr=n=>Number.isInteger(n)?String(n):n.toFixed(1).replace('.',',');
 function node(tag,cls,text){const el=document.createElement(tag);if(cls)el.className=cls;if(text!==undefined)el.textContent=String(text);return el;}
 function bar(percent){const track=node('div','bar-track'),fill=node('div','bar-fill');fill.style.width=`${Math.max(0,Math.min(100,percent))}%`;track.append(fill);return track;}
 
-function submittedPoints(text, heading) {
-  // The form appends the dedicated points as a final bulleted block after the free text.
-  const block = (text || '').split(/\r?\n\r?\n/).at(-1);
+function feedbackPoints(text, heading) {
+  const feedback = (text || '').trim();
+  if (!feedback) return [];
+
+  // Recent responses append a bulleted block. Earlier responses store the feedback as plain text.
+  const block = feedback.split(/\r?\n\r?\n/).at(-1);
   const [title, ...lines] = block.split(/\r?\n/);
-  if (title !== heading) return [];
-  return lines.filter(line => line.startsWith('• ')).map(line => line.slice(2));
+  if (title !== heading) return [feedback];
+  const points = lines.filter(line => line.startsWith('• ')).map(line => line.slice(2));
+  return points.length ? points : [feedback];
 }
 
 function observation(row,i){
@@ -42,7 +46,10 @@ function render(){
   const valid=rows.filter(r=>scoreOf(r.answers));const scores=valid.map(r=>scoreOf(r.answers).score);
   const count=valid.length,avg=count?scores.reduce((a,b)=>a+b,0)/count:null;
   const avgLabel = avg === null ? '—' : fr(Math.round(avg * 10) / 10);
-  const discomfortCount = valid.filter(r => r.discomfort === 'Léger' || r.discomfort === 'Important').length;
+  const discomfortCount = valid.filter(row => {
+    const level = (row.discomfort || '').trim().toLowerCase();
+    return level === 'leger' || level === 'léger' || level === 'important';
+  }).length;
   $('stat-count').textContent=String(count);
   $('stat-goal').textContent=count<5?'Objectif : 5 participants':'Objectif atteint';
   $('stat-average').textContent = avgLabel;
@@ -149,8 +156,8 @@ window.addEventListener('beforeprint', () => {
   date.textContent = `Édité le ${now.toLocaleString('fr-FR', {dateStyle:'long', timeStyle:'short'})}`;
 
   const valid = rows.filter(row => scoreOf(row.answers));
-  const comfort = valid.flatMap(row => submittedPoints(row.comment, 'Points de confort'));
-  const discomfort = valid.flatMap(row => submittedPoints(row.difficulties, 'Points d’inconfort'));
+  const comfort = valid.flatMap(row => feedbackPoints(row.comment, 'Points de confort'));
+  const discomfort = valid.flatMap(row => feedbackPoints(row.difficulties, 'Points d’inconfort'));
   $('print-comfort').replaceChildren(...comfort.map(point => node('li', '', point)));
   $('print-discomfort').replaceChildren(...discomfort.map(point => node('li', '', point)));
   $('print-status').textContent = $('error').textContent || (resultsLoaded ? '' : 'Chargement des résultats…');

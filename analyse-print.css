@@ -192,6 +192,7 @@ body > .topbar, body > .hero, body > main {
 .print-feedback li {
   padding: 2mm 1mm;
   border-bottom: 1px solid var(--line);
+  white-space: pre-line;
   overflow-wrap: anywhere;
   break-inside: avoid;
 }
