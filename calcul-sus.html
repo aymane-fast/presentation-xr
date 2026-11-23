@@ -19,77 +19,51 @@
       </div>
     </div>
   </nav>
-  <header class="hero">
+  <header class="hero sus-hero">
     <div class="hero-inner">
-      <h1>Comment se calcule le SUS&nbsp;?</h1>
-      <p>Le SUS (<span lang="en">System Usability Scale</span>) résume en un score la facilité d’utilisation ressentie par les participants. Plus le score est élevé, plus la visite immersive leur a paru facile à utiliser.</p>
+      <h1>Qu’est-ce que le SUS&nbsp;?</h1>
+      <p>Le SUS est un questionnaire qui mesure à quel point une application paraît facile à utiliser.</p>
     </div>
   </header>
   <main class="shell main sus-guide">
     <div class="sus-grid">
       <section class="card sus-card" aria-labelledby="sus-method">
-        <h2 id="sus-method">Des réponses au score individuel</h2>
-        <p>Chaque participant répond à 10 affirmations, de <strong>1</strong> (« pas du tout d’accord ») à <strong>5</strong> (« tout à fait d’accord »).</p>
-        <dl class="sus-rules">
-          <div>
-            <dt>Questions impaires <span>(1, 3, 5, 7, 9)</span></dt>
-            <dd>Plus on est d’accord, plus on marque de points.</dd>
-            <dd class="sus-rule-formula">Réponse − 1</dd>
-          </div>
-          <div>
-            <dt>Questions paires <span>(2, 4, 6, 8, 10)</span></dt>
-            <dd>Moins on est d’accord, plus on marque de points.</dd>
-            <dd class="sus-rule-formula">5 − réponse</dd>
-          </div>
-        </dl>
-        <p>Chaque réponse rapporte ainsi de 0 à 4 points. On additionne les points des 10 questions, puis on les convertit en un score de 0 à 100.</p>
-        <p class="sus-formula">Score SUS = total des points × 2,5</p>
-      </section>
-
-      <section class="card sus-card" aria-labelledby="sus-example">
-        <h2 id="sus-example">Un exemple avec 10 réponses</h2>
-        <p>Un participant répond <strong>4</strong> aux cinq questions impaires et <strong>2</strong> aux cinq questions paires.</p>
-        <dl class="sus-example">
+        <h2 id="sus-method">Comment calculer le score&nbsp;?</h2>
+        <p>10 questions, avec des réponses de 1 à 5.</p>
+        <dl class="sus-steps">
           <div>
             <dt>Questions impaires</dt>
-            <dd>5 × (4 − 1) = <strong>15 points</strong></dd>
+            <dd>Réponse − 1</dd>
           </div>
           <div>
             <dt>Questions paires</dt>
-            <dd>5 × (5 − 2) = <strong>15 points</strong></dd>
+            <dd>5 − réponse</dd>
           </div>
         </dl>
-        <p class="sus-formula">(15 + 15) × 2,5 = <strong>75 sur 100</strong></p>
-        <p>Dans les résultats, on part des sommes des réponses, soit 20 pour les impaires et 10 pour les paires. Le « + 20 » combine les cinq retraits de 1 et les cinq ajouts de 5.</p>
-        <p class="sus-equation">(Somme impaire − somme paire + 20) ×&nbsp;2,5</p>
-        <p class="sus-equation">(20 − 10 + 20) × 2,5 = 75</p>
+        <p>On additionne tous les points, puis on multiplie le total par <strong>2,5</strong> pour obtenir un score sur <strong>100</strong>.</p>
+      </section>
+
+      <section class="card sus-card" aria-labelledby="sus-example">
+        <h2 id="sus-example">Exemple</h2>
+        <p>Une personne répond <strong>4</strong> à chaque question impaire et <strong>2</strong> à chaque question paire.</p>
+        <dl class="sus-steps">
+          <div>
+            <dt>Impaires</dt>
+            <dd>5 × (4 − 1) = 15</dd>
+          </div>
+          <div>
+            <dt>Paires</dt>
+            <dd>5 × (5 − 2) = 15</dd>
+          </div>
+        </dl>
+        <p class="sus-formula">(15 + 15) × 2,5 = 75/100</p>
       </section>
     </div>
 
     <section class="card sus-card" aria-labelledby="sus-results">
-      <h2 id="sus-results">Que se passe-t-il après «&nbsp;Envoyer&nbsp;»&nbsp;?</h2>
-      <p>Le site calcule le score et l’enregistre avec les réponses. À l’ouverture de la page Résultats, ou quand on clique sur « Actualiser », le tableau récupère les réponses enregistrées et met à jour les chiffres du groupe.</p>
-      <dl class="sus-metrics">
-        <div>
-          <dt>Score SUS moyen</dt>
-          <dd>Somme des scores individuels ÷ nombre de réponses complètes. Avec deux scores de 75 et 65, la moyenne est de 70 sur 100.</dd>
-        </div>
-        <div>
-          <dt>Scores des participants et répartition</dt>
-          <dd>Le tableau affiche chaque score, le nombre de réponses complètes, le score le plus élevé et le nombre de scores par tranche. Il utilise 68 sur 100 comme repère.</dd>
-        </div>
-        <div>
-          <dt>Score par question</dt>
-          <dd>Pour chaque question, la barre indique la moyenne des points après conversion, sur 4.</dd>
-        </div>
-        <div>
-          <dt>Inconfort et observations</dt>
-          <dd>Le site compte les signalements d’inconfort léger ou important et affiche les remarques. Le score SUS repose uniquement sur les dix réponses.</dd>
-        </div>
-      </dl>
-      <a class="primary-btn sus-results-link" href="/analyse">Voir les résultats</a>
+      <h2 id="sus-results">Après l’envoi</h2>
+      <p>Le site enregistre les réponses et calcule le score SUS de chaque participant. La page <a class="mini-link" href="/analyse">Résultats</a> affiche la moyenne du groupe et les scores individuels.</p>
     </section>
-    <p class="sus-source">Méthode de calcul de <a href="https://hci-studies.org/methods-and-measures/downloads/SUS_Brooke1996.pdf">John Brooke (1996)</a>.</p>
   </main>
 </body>
 </html>
