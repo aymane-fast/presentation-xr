@@ -1,10 +1,13 @@
 'use strict';
 const $=id=>document.getElementById(id);
 let rows=[];
+let resultsLoaded = false;
 const eraseAll = $('delete-all-responses');
+const printButton = $('print-btn');
 
 function setBusy(busy) {
   $('refresh-btn').disabled = busy;
+  printButton.disabled = busy || !resultsLoaded;
   eraseAll.disabled = busy || rows.length === 0;
   document.querySelectorAll('#scores-body button').forEach(button => { button.disabled = busy; });
 }
@@ -17,6 +20,15 @@ const scoreOf=a=>{
 const fr=n=>Number.isInteger(n)?String(n):n.toFixed(1).replace('.',',');
 function node(tag,cls,text){const el=document.createElement(tag);if(cls)el.className=cls;if(text!==undefined)el.textContent=String(text);return el;}
 function bar(percent){const track=node('div','bar-track'),fill=node('div','bar-fill');fill.style.width=`${Math.max(0,Math.min(100,percent))}%`;track.append(fill);return track;}
+
+function submittedPoints(text, heading) {
+  // The form appends the dedicated points as a final bulleted block after the free text.
+  const block = (text || '').split(/\r?\n\r?\n/).at(-1);
+  const [title, ...lines] = block.split(/\r?\n/);
+  if (title !== heading) return [];
+  return lines.filter(line => line.startsWith('• ')).map(line => line.slice(2));
+}
+
 function observation(row,i){
   const item=node('article','obs-item');
   const title=node('div','obs-title');title.append(node('span','',`Participant ${String(i+1).padStart(2,'0')}`),node('span','obs-meta',row.device||'Appareil non précisé'));item.append(title);
@@ -29,11 +41,17 @@ function observation(row,i){
 function render(){
   const valid=rows.filter(r=>scoreOf(r.answers));const scores=valid.map(r=>scoreOf(r.answers).score);
   const count=valid.length,avg=count?scores.reduce((a,b)=>a+b,0)/count:null;
+  const avgLabel = avg === null ? '—' : fr(Math.round(avg * 10) / 10);
+  const discomfortCount = valid.filter(r => r.discomfort === 'Léger' || r.discomfort === 'Important').length;
   $('stat-count').textContent=String(count);
   $('stat-goal').textContent=count<5?'Objectif : 5 participants':'Objectif atteint';
-  $('stat-average').textContent=avg===null?'—':fr(Math.round(avg*10)/10);
+  $('stat-average').textContent = avgLabel;
   $('stat-best').textContent=count?fr(Math.max(...scores)):'—';
-  $('stat-discomfort').textContent=String(valid.filter(r=>r.discomfort==='Léger'||r.discomfort==='Important').length);
+  $('stat-discomfort').textContent = String(discomfortCount);
+  $('print-average').textContent = avgLabel;
+  $('print-score-fill').style.width = `${avg ?? 0}%`;
+  $('print-count').textContent = String(count);
+  $('print-discomfort-count').textContent = String(discomfortCount);
   const body=$('scores-body');body.replaceChildren();
   if(!count){const tr=node('tr');const td=node('td','empty');td.colSpan=6;td.textContent='Aucune réponse enregistrée.';tr.append(td);body.append(tr);}
   valid.forEach((r,i)=>{
@@ -76,6 +94,7 @@ async function refresh(){
     const response=await fetch('/api/results',{cache:'no-store'});const data=await response.json();
     if(!response.ok||!Array.isArray(data.responses))throw new Error(data.error||'Erreur de chargement.');
     rows=data.responses;render();
+    resultsLoaded = true;
     $('last-refresh').hidden=false;
     $('last-refresh').textContent=`Mis à jour à ${new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'})}`;
     if(rows.length>=data.limit){$('error').textContent=`Affichage limité aux ${data.limit} premières réponses.`;$('error').className='notice error';}
@@ -122,4 +141,18 @@ $('csv-btn').addEventListener('click',()=>{
 });
 $('json-btn').addEventListener('click',()=>saveFile('resultats-sus.json',JSON.stringify({exported_at:new Date().toISOString(),responses:rows},null,2),'application/json'));
 $('refresh-btn').addEventListener('click',refresh);
+printButton.addEventListener('click', () => window.print());
+window.addEventListener('beforeprint', () => {
+  const date = $('print-date');
+  const now = new Date();
+  date.dateTime = now.toISOString();
+  date.textContent = `Édité le ${now.toLocaleString('fr-FR', {dateStyle:'long', timeStyle:'short'})}`;
+
+  const valid = rows.filter(row => scoreOf(row.answers));
+  const comfort = valid.flatMap(row => submittedPoints(row.comment, 'Points de confort'));
+  const discomfort = valid.flatMap(row => submittedPoints(row.difficulties, 'Points d’inconfort'));
+  $('print-comfort').replaceChildren(...comfort.map(point => node('li', '', point)));
+  $('print-discomfort').replaceChildren(...discomfort.map(point => node('li', '', point)));
+  $('print-status').textContent = $('error').textContent || (resultsLoaded ? '' : 'Chargement des résultats…');
+});
 refresh();

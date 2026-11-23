@@ -11,6 +11,7 @@
 @media(max-width:420px){.hero h1{font-size:29px}.brand{font-size:10px;letter-spacing:.07em}.brand-square{width:27px;height:27px}.top-links a{font-size:10px}.question-title{font-size:13px}.stats-grid{gap:9px}.stat{padding:16px}.stat-value{font-size:26px}}
 .delete-response:not(:disabled){color:#922e39;border-color:#efcbd0}
 .delete-response:hover:not(:disabled){background:#fff0f1}
+.print-report{display:none}
 
 /* Calcul du SUS */
 .sus-hero .hero-inner {

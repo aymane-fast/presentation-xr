@@ -1,0 +1,213 @@
+@page {
+  size: A4;
+  margin: 15mm 16mm 18mm;
+
+  @top-left { content: ""; }
+  @top-right { content: ""; }
+
+  @bottom-left {
+    content: "XR / UX immersive  ·  Synthèse SUS";
+    font: 8pt system-ui, sans-serif;
+    color: #405661;
+  }
+
+  @bottom-right {
+    content: "Page " counter(page) " / " counter(pages);
+    font: 8pt system-ui, sans-serif;
+    color: #405661;
+  }
+}
+
+body {
+  background: white;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+body > .topbar, body > .hero, body > main {
+  display: none;
+}
+
+.print-report {
+  display: block;
+  color: var(--ink);
+  font: 11pt/1.4 system-ui, sans-serif;
+}
+
+.print-masthead {
+  padding: 6mm 7mm;
+  background: var(--navy);
+  border-left: 2mm solid #54b5aa;
+  border-radius: 3mm;
+  color: white;
+  break-inside: avoid;
+}
+
+.print-meta {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 4mm;
+  margin-bottom: 5mm;
+  color: #d2e4e7;
+  font-size: 8.5pt;
+}
+
+.print-meta span {
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  font-weight: 750;
+}
+
+.print-masthead h1 {
+  margin: 0 0 1mm;
+  font-size: 26pt;
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -.035em;
+}
+
+.print-masthead p {
+  margin: 0;
+  color: #d2e4e7;
+}
+
+.print-status {
+  margin: 4mm 0 0;
+  color: #405661;
+  font-size: 9pt;
+}
+
+.print-status:empty {
+  display: none;
+}
+
+.print-summary {
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  gap: 4mm;
+  margin: 6mm 0 8mm;
+  break-inside: avoid;
+}
+
+.print-score {
+  padding: 5mm 6mm;
+  border: 1px solid #c2dbd7;
+  border-radius: 3mm;
+  background: var(--tealLight);
+  color: var(--navy);
+}
+
+.print-score h2 {
+  margin: 0;
+  font-size: 11pt;
+  font-weight: 750;
+}
+
+.print-score p {
+  margin: 2mm 0 3mm;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.print-score strong {
+  font-size: 37pt;
+  letter-spacing: -.06em;
+}
+
+.print-score p span {
+  color: #405661;
+  font-size: 16pt;
+  font-weight: 650;
+}
+
+.print-scale {
+  height: 1.6mm;
+  overflow: hidden;
+  border-radius: 1mm;
+  background: #c8e1de;
+}
+
+.print-scale > div {
+  width: 0;
+  height: 100%;
+  background: var(--teal);
+}
+
+.print-stats {
+  display: grid;
+  gap: 3mm;
+  margin: 0;
+}
+
+.print-stats > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 3mm;
+  padding: 3mm 4mm;
+  border: 1px solid var(--line);
+  border-radius: 3mm;
+  background: var(--bg);
+}
+
+.print-stats dt {
+  font-size: 10pt;
+  font-weight: 650;
+}
+
+.print-stats dd {
+  margin: 0;
+  font-size: 18pt;
+  font-weight: 750;
+  font-variant-numeric: tabular-nums;
+}
+
+.print-feedback {
+  --point-accent: var(--teal);
+  --point-background: var(--tealLight);
+}
+
+.print-feedback-discomfort {
+  --point-accent: #8c531b;
+  --point-background: #fbf3e6;
+  margin-top: 6mm;
+}
+
+.print-feedback h2 {
+  margin: 0 0 1mm;
+  padding: 2.5mm 4mm;
+  border-left: 1mm solid var(--point-accent);
+  background: var(--point-background);
+  color: var(--navy);
+  font-size: 13pt;
+  break-after: avoid;
+}
+
+.print-feedback ul {
+  margin: 0;
+  padding: 0 0 0 8mm;
+}
+
+.print-feedback li {
+  padding: 2mm 1mm;
+  border-bottom: 1px solid var(--line);
+  overflow-wrap: anywhere;
+  break-inside: avoid;
+}
+
+.print-feedback li::marker {
+  color: var(--point-accent);
+}
+
+.print-feedback ul:empty,
+.print-feedback ul:not(:empty) + .print-empty {
+  display: none;
+}
+
+.print-empty {
+  margin: 0;
+  padding: 2.5mm 5mm;
+  color: #405661;
+  font-size: 10pt;
+}
