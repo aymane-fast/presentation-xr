@@ -1,6 +1,6 @@
 # Étude SUS — Google Arts & Culture
 
-**Deux liens publics, une base de données et aucun compte participant.** Site en HTML/CSS/JS avec deux fonctions Vercel et base Supabase (PostgreSQL).
+**Trois pages publiques, une base de données et aucun compte participant.** Site en HTML/CSS/JS avec deux fonctions Vercel et base Supabase (PostgreSQL).
 
 ## 1. Créer une base Supabase gratuite
 
@@ -21,10 +21,11 @@
    - `SUPABASE_SECRET_KEY` = votre clé **Secret** (`sb_secret_...`).
 5. Déployer, ou **Redeploy** si les variables ont été ajoutées après le premier déploiement.
 
-Les deux liens seront :
+Liens publics :
 
 - **Questionnaire** : `https://votre-nom.vercel.app/`
 - **Analyse** : `https://votre-nom.vercel.app/analyse`
+- **Calcul du SUS** : `https://votre-nom.vercel.app/calcul-sus`
 
 ## 3. Comment ça fonctionne
 
