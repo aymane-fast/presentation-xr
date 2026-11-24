@@ -1,6 +1,7 @@
 {
   "rewrites": [
     {"source": "/analyse", "destination": "/analyse.html"},
+    {"source": "/immersive", "destination": "/analyse.html"},
     {"source": "/calcul-sus", "destination": "/calcul-sus.html"},
     {"source": "/admin", "destination": "/admin.html"}
   ],

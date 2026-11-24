@@ -1,9 +1,41 @@
 'use strict';
 const $=id=>document.getElementById(id);
+const isImmersive = /^\/immersive\/?$/.test(window.location.pathname);
+const resultsUrl = isImmersive ? '/immersive-results.json' : '/api/results';
+const exportName = isImmersive ? 'resultats-sus-immersive' : 'resultats-sus';
+const immersiveStorageKey = 'immersive-deleted-response-ids';
+const immersiveDeletedIds = isImmersive ? readImmersiveDeletedIds() : null;
 let rows=[];
 let resultsLoaded = false;
 const eraseAll = $('delete-all-responses');
 const printButton = $('print-btn');
+
+if (isImmersive) {
+  const studyName = 'Meta ArtQuest VR';
+  document.title = `Analyse SUS — ${studyName}`;
+  document.querySelectorAll('[data-study-name]').forEach(label => { label.textContent = studyName; });
+  $('results-link').removeAttribute('aria-current');
+  $('immersive-link').setAttribute('aria-current', 'page');
+}
+
+function readImmersiveDeletedIds() {
+  try {
+    const ids = JSON.parse(sessionStorage.getItem(immersiveStorageKey));
+    return new Set(Array.isArray(ids) ? ids : []);
+  } catch {
+    return new Set();
+  }
+}
+
+function deleteImmersiveResponses(selection) {
+  const removedIds = selection.ids ?? rows.map(row => row.id);
+  for (const id of removedIds) immersiveDeletedIds.add(id);
+  try {
+    sessionStorage.setItem(immersiveStorageKey, JSON.stringify([...immersiveDeletedIds]));
+  } catch {
+    // The current page still retains the selection if browser storage is unavailable.
+  }
+}
 
 function setBusy(busy) {
   $('refresh-btn').disabled = busy;
@@ -17,6 +49,18 @@ const scoreOf=a=>{
   const even=a.filter((_,i)=>i%2!==0).reduce((s,v)=>s+v,0);
   return {odd,even,score:(odd-even+20)*2.5};
 };
+
+function immersiveResponses(responses) {
+  const visible = [];
+  for (const response of responses) {
+    const result = scoreOf(response.answers);
+    if (result && !immersiveDeletedIds.has(response.id)) {
+      visible.push({...response, odd_sum: result.odd, even_sum: result.even, score: result.score});
+    }
+  }
+  return visible;
+}
+
 const fr=n=>Number.isInteger(n)?String(n):n.toFixed(1).replace('.',',');
 function node(tag,cls,text){const el=document.createElement(tag);if(cls)el.className=cls;if(text!==undefined)el.textContent=String(text);return el;}
 function bar(percent){const track=node('div','bar-track'),fill=node('div','bar-fill');fill.style.width=`${Math.max(0,Math.min(100,percent))}%`;track.append(fill);return track;}
@@ -71,7 +115,8 @@ function render(){
     remove.type = 'button';
     remove.setAttribute('aria-label', `Supprimer ${participant}`);
     remove.addEventListener('click', () => {
-      if (window.confirm(`Supprimer définitivement la réponse de ${participant} ?`)) {
+      const action = isImmersive ? 'Supprimer' : 'Supprimer définitivement';
+      if (window.confirm(`${action} la réponse de ${participant} ?`)) {
         deleteResponses({ids:[r.id]});
       }
     });
@@ -98,9 +143,10 @@ async function refresh(){
   setBusy(true);$('refresh-btn').textContent='Chargement…';
   $('error').textContent='';$('error').className='';
   try{
-    const response=await fetch('/api/results',{cache:'no-store'});const data=await response.json();
+    const response=await fetch(resultsUrl,{cache:'no-store'});const data=await response.json();
     if(!response.ok||!Array.isArray(data.responses))throw new Error(data.error||'Erreur de chargement.');
-    rows=data.responses;render();
+    rows = isImmersive ? immersiveResponses(data.responses) : data.responses;
+    render();
     resultsLoaded = true;
     $('last-refresh').hidden=false;
     $('last-refresh').textContent=`Mis à jour à ${new Date().toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'})}`;
@@ -114,11 +160,15 @@ async function deleteResponses(selection) {
   $('error').className = '';
   $('error').textContent = 'Suppression…';
   try {
-    const response = await fetch('/api/admin', {
-      method:'DELETE', headers:{'Content-Type':'application/json'}, body:JSON.stringify(selection)
-    });
-    const data = await response.json();
-    if (!response.ok) throw new Error(data.error || 'Suppression impossible.');
+    if (isImmersive) {
+      deleteImmersiveResponses(selection);
+    } else {
+      const response = await fetch('/api/admin', {
+        method:'DELETE', headers:{'Content-Type':'application/json'}, body:JSON.stringify(selection)
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error || 'Suppression impossible.');
+    }
     rows = selection.ids ? rows.filter(row => !selection.ids.includes(row.id)) : [];
     render();
     await refresh();
@@ -131,7 +181,8 @@ async function deleteResponses(selection) {
 }
 
 eraseAll.addEventListener('click', () => {
-  const confirmation = window.prompt('Suppression définitive de toutes les réponses. Saisissez SUPPRIMER TOUT pour confirmer.');
+  const action = isImmersive ? 'Suppression' : 'Suppression définitive';
+  const confirmation = window.prompt(`${action} de toutes les réponses. Saisissez SUPPRIMER TOUT pour confirmer.`);
   if (confirmation === 'SUPPRIMER TOUT') deleteResponses({confirmation});
 });
 
@@ -144,9 +195,9 @@ $('csv-btn').addEventListener('click',()=>{
   const data=cleaned.map((r,i)=>[ `P${String(i+1).padStart(2,'0')}`,r.created_at||'',r.visit_name||'',r.device||'',...r.answers,scoreOf(r.answers).odd,scoreOf(r.answers).even,scoreOf(r.answers).score,r.discomfort||'',r.difficulties||'',r.comment||'' ]);
   const escape=x=>'"'+String(x??'').replace(/"/g,'""')+'"';
   const csv='\uFEFF'+[head,...data].map(row=>row.map(escape).join(';')).join('\r\n');
-  saveFile('resultats-sus.csv',csv,'text/csv;charset=utf-8');
+  saveFile(`${exportName}.csv`,csv,'text/csv;charset=utf-8');
 });
-$('json-btn').addEventListener('click',()=>saveFile('resultats-sus.json',JSON.stringify({exported_at:new Date().toISOString(),responses:rows},null,2),'application/json'));
+$('json-btn').addEventListener('click',()=>saveFile(`${exportName}.json`,JSON.stringify({exported_at:new Date().toISOString(),responses:rows},null,2),'application/json'));
 $('refresh-btn').addEventListener('click',refresh);
 printButton.addEventListener('click', () => window.print());
 window.addEventListener('beforeprint', () => {

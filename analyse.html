@@ -1,12 +1,12 @@
 <!doctype html>
 <html lang="fr"><head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#0e2533">
-  <meta name="description" content="Tableau de bord de résultats SUS — Google Arts & Culture">
+  <meta name="description" content="Tableau de bord des résultats du questionnaire SUS.">
   <title>Analyse SUS — Google Arts & Culture</title><link rel="stylesheet" href="/styles.css"><link rel="stylesheet" href="/analyse-print.css" media="print"><script defer src="/analyse.js"></script>
 </head><body>
   <nav class="topbar" aria-label="Navigation"><div class="shell topbar-inner"><a class="brand" href="/"><span class="brand-square">✳</span> XR / UX IMMERSIVE</a>
-    <div class="top-links"><a href="/">Questionnaire</a><a href="/analyse" aria-current="page">Résultats</a><a href="/calcul-sus">Calcul du SUS</a></div></div></nav>
-  <header class="hero"><div class="hero-inner"><h1>Résultats SUS</h1><p>Google Arts &amp; Culture</p></div></header>
+    <div class="top-links"><a href="/">Questionnaire</a><a href="/analyse" id="results-link" aria-current="page">Résultats</a><a href="/immersive" id="immersive-link">Immersive</a><a href="/calcul-sus">Calcul du SUS</a></div></div></nav>
+  <header class="hero"><div class="hero-inner"><h1>Résultats SUS</h1><p data-study-name>Google Arts &amp; Culture</p></div></header>
   <main class="shell main">
     <div class="dashboard-head"><div class="pill" id="last-refresh" hidden></div>
       <div class="dashboard-actions"><button type="button" class="ghost-btn" id="refresh-btn">↻ Actualiser</button><button type="button" class="ghost-btn" id="csv-btn" disabled>↓ Export CSV</button><button type="button" class="ghost-btn" id="json-btn" disabled>↓ Export JSON</button><button type="button" class="ghost-btn" id="print-btn" disabled>Imprimer / PDF</button><button type="button" class="ghost-btn delete-response" id="delete-all-responses" disabled>Tout supprimer</button></div>
@@ -37,7 +37,7 @@
     <header class="print-masthead">
       <div class="print-meta"><span>XR / UX immersive</span><time id="print-date"></time></div>
       <h1 id="print-title">Synthèse des résultats SUS</h1>
-      <p>Google Arts &amp; Culture</p>
+      <p data-study-name>Google Arts &amp; Culture</p>
     </header>
 
     <p class="print-status" id="print-status"></p>

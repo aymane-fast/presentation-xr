@@ -1,0 +1,49 @@
+{
+  "responses": [
+    {
+      "id": 1,
+      "visit_name": "ArtQuest VR · Galerie immersive",
+      "device": "Meta Quest 3",
+      "answers": [4, 2, 5, 2, 4, 1, 4, 2, 4, 2],
+      "discomfort": "Aucun",
+      "difficulties": "Le repère pour revenir à l’entrée de la galerie était peu visible.",
+      "comment": "Les œuvres sont faciles à observer de près. Le déplacement par téléportation permet de visiter à son rythme."
+    },
+    {
+      "id": 2,
+      "visit_name": "ArtQuest VR · Galerie immersive",
+      "device": "Meta Quest 2",
+      "answers": [4, 3, 4, 2, 4, 2, 3, 2, 4, 3],
+      "discomfort": "Léger",
+      "difficulties": "Quelques hésitations pour viser les cartels avec la manette. Légère fatigue visuelle en lisant les petits textes.",
+      "comment": "L’éclairage de la galerie est agréable et les tableaux restent nets quand on s’en approche."
+    },
+    {
+      "id": 3,
+      "visit_name": "ArtQuest VR · Galerie immersive",
+      "device": "Meta Quest 3",
+      "answers": [5, 1, 5, 1, 4, 2, 5, 1, 5, 1],
+      "discomfort": "Aucun",
+      "difficulties": "Le menu s’est ouvert une fois en essayant de sélectionner une œuvre.",
+      "comment": "Les commandes sont faciles à retenir. La visite reste confortable lorsqu’on prend le temps de parcourir chaque salle."
+    },
+    {
+      "id": 4,
+      "visit_name": "ArtQuest VR · Galerie immersive",
+      "device": "Meta Quest 2",
+      "answers": [3, 4, 3, 3, 4, 3, 3, 3, 3, 3],
+      "discomfort": "Léger",
+      "difficulties": "L’orientation est difficile après un changement de salle. Les rotations rapides donnent un léger vertige.",
+      "comment": "La visite est plus confortable en restant sur place pour examiner une œuvre."
+    },
+    {
+      "id": 5,
+      "visit_name": "ArtQuest VR · Galerie immersive",
+      "device": "Meta Quest 3",
+      "answers": [4, 2, 4, 3, 5, 2, 4, 2, 4, 2],
+      "discomfort": "Aucun",
+      "difficulties": "Certains éléments interactifs se distinguent mal quand on se trouve à l’autre bout de la salle.",
+      "comment": "Les transitions entre les salles sont fluides. La taille des œuvres donne une bonne impression de présence."
+    }
+  ]
+}
